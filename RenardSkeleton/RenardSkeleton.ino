@@ -25,6 +25,8 @@ Servo servoHead;
 Servo servoEyes;
 Renard renard(Serial, 4);
 
+//Reverse left and right on the skeleton, useful for when the parrot is on his right sholder. If so, make it true
+const boolean reverseLeftAndRightHead = true;
 
 void setup() {
   // Open serial communications
@@ -73,9 +75,14 @@ void loop() {
   int channelValueHead = renard.channelValue(4);
   int headPos = 90;
   if (channelValueHead != 0) {
-    headPos = map(channelValueHead, 0, 255, 0, 180);
+    if(reverseLeftAndRightHead){
+        headPos = map(channelValueHead, 0, 255, 180, 0);
+    }
+    else {
+        headPos = map(channelValueHead, 0, 255, 0, 180);
+    }
+    
   }
   servoHead.write(headPos);
 
 }
-
