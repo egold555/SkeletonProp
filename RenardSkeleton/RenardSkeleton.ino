@@ -9,27 +9,36 @@
    Brown: GND
 */
 
+//new bootloader
+
 // Values on the servo that correspond to mouth positions.
-const int FULLOPEN = 150;
-const int FULLCLOSED = 125;
+const int FULLOPEN = 36;
+const int FULLCLOSED = 18;
 
 const int SERVO_MOUTH_PIN = 9;
 const int SERVO_HEAD_PIN = 11;
-const int EYESPIN = 3;
+const int EYES_PIN = 3;
+const int SERVO_EYE_PIN = 10;
 
 Servo servoMouth;
 Servo servoHead;
-Renard renard(Serial, 3);
+Servo servoEyes;
+Renard renard(Serial, 4);
 
 
 void setup() {
   // Open serial communications
   Serial.begin(57600);
-  pinMode(EYESPIN, OUTPUT);
+  pinMode(EYES_PIN, OUTPUT);
+
   servoMouth.attach(SERVO_MOUTH_PIN);
   servoMouth.write(FULLCLOSED);
   servoHead.attach(SERVO_HEAD_PIN);
   servoHead.write(90);
+
+  servoEyes.attach(SERVO_EYE_PIN);
+  servoEyes.write(89);
+
 }
 
 void loop() {
@@ -38,20 +47,35 @@ void loop() {
     ;
 
   //Do Mouth
-  int channelValue = renard.channelValue(1);
-  int pos = map(channelValue, 0, 255, FULLCLOSED, FULLOPEN);
-  servoMouth.write(pos);
+  int channelValueMouth = renard.channelValue(1);
+  int posMouth = map(channelValueMouth, 0, 255, FULLCLOSED, FULLOPEN);
+  servoMouth.write(posMouth);
+
+
+
+  //Do Eyes Servo
+  int channelValueEyes = renard.channelValue(3);
+  int eyesPos = 89;
+  if (channelValueEyes != 0) {
+    eyesPos = map(channelValueEyes, 0, 255, 0, 180);
+  }
+  servoEyes.write(eyesPos);
+
+  
+
+  //Do Eyes
+  int eyesValue = renard.channelValue(2);
+  analogWrite(EYES_PIN, eyesValue);
+
+  
 
   //Do Head
-  int channelValueHead = renard.channelValue(3);
+  int channelValueHead = renard.channelValue(4);
   int headPos = 90;
-  if(channelValueHead != 0){
+  if (channelValueHead != 0) {
     headPos = map(channelValueHead, 0, 255, 0, 180);
   }
   servoHead.write(headPos);
 
-  //Do Eyes
-  int eyesValue = renard.channelValue(2);
-  analogWrite(EYESPIN, eyesValue);
 }
 
