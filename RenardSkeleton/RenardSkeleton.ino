@@ -9,11 +9,11 @@
    Brown: GND
 */
 
-//new bootloader
+//****** NEW BOOTLOADER *******
 
 // Values on the servo that correspond to mouth positions.
 const int FULLOPEN = 36;
-const int FULLCLOSED = 18;
+const int FULLCLOSED = 14;
 
 const int SERVO_MOUTH_PIN = 9;
 const int SERVO_HEAD_PIN = 11;
