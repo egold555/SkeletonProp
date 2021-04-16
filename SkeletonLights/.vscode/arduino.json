@@ -1,0 +1,7 @@
+{
+    "board": "arduino:avr:nano",
+    "sketch": "SkeletonLights.ino",
+    "port": "COM10",
+    "programmer": "AVRISP mkII",
+    "configuration": "cpu=atmega328old"
+}
